@@ -18,7 +18,7 @@ const router = new Router({
                     path: '/',
                     name: 'Classification',
                     meta: {
-                        title: '首页',
+                        title: '图书分类',
                         auth: false, // 是否需要登录
                         keepAlive: false,
                     },

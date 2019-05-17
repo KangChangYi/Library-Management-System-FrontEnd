@@ -1,19 +1,15 @@
 <template>
   <div class="book-classification-layout">
-      <header class="header">
-          <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{name:'Classification'}">图书分类</el-breadcrumb-item>
-          </el-breadcrumb>
-      </header>
+      <!-- 组件 -->
+      <page-header name="Classification"></page-header>
       <div class="content-layout">
             <aside class="book-categories">
                     <label class="categories">
                         类别
                     </label>
                     <ul>
-                        <li v-for="type in bookType" :item="type" :key="type">
-                            {{type.name}}
+                        <li v-for="type in bookType" :item="type.typeName" :key="type.typeName">
+                            {{type.typeName}}
                         </li>
                     </ul>
             </aside>
@@ -23,9 +19,14 @@
                     </el-input>
                 </div>
                 <div class="search-result-tip" v-if="searchedBookList">
-                    "Az" 共 <b>2</b> 个搜索结果
+                    "全部类别" 共有<span>{{result}}</span> 本书
                 </div>
+                <!-- 组件 -->
                 <BookList></BookList>
+                <div class="paging-layout">
+                    <!-- 组件 -->
+                    <Paging></Paging>
+                </div>
             </div>
       </div>
   </div>
@@ -33,6 +34,9 @@
 
 <script>
 import BookList from './components/bookList.vue';
+import Paging from '@/components/paging/index.vue';
+import pageHeader from '@/components/header/index.vue';
+import { bookTypeList } from '@/api/bookType';
 
 export default {
     name: 'Classification',
@@ -41,47 +45,46 @@ export default {
             searchedBookList: 'has',
             searchText: '',
             bookType: [
-                { name: '文学类' },
-                { name: '科研类' },
-                { name: '技术类' },
-                { name: 'JavaScript' },
-                { name: 'Node' },
-                { name: 'Android' },
-                { name: 'Java' },
+                // { typeName: '文学类' },
+                // { typeName: '科研类' },
+                // { typeName: '技术类' },
             ],
+            result: 12,
         };
     },
-    created() {},
+    created() {
+        bookTypeList().then((res) => {
+            this.bookType = res.data;
+        });
+    },
     methods: {},
-    computed: {},
+    computed: {
+
+    },
     watch: {},
     components: {
         BookList,
+        Paging,
+        pageHeader,
     },
 };
 </script>
 <style lang="scss" scoped>
 .book-classification-layout {
-    width:1070px;
-    height:100%;
+    width:$layout-width + 20px;
     margin:auto;
-    border:1px red solid;
-    .header{
-        padding:25px 10px;
-    }
+    // border:1px red solid;
+    padding-bottom:30px;
     .content-layout{
-        height:calc(100% - 70px);
-        border:1px red solid;
-        @include displayCenter($align-items:flex-start);
+        display:flex;
     }
 }
 
 .book-categories {
-    border:1px red solid;
-    height:100%;
+    // border:1px red solid;
     flex:1;
     padding:20px 15px 0 0;
-    border-right:1px #DFDFDF solid;
+    // border-right:1px #DFDFDF solid;
     border-bottom:1px #DFDFDF solid;
     .categories {
         padding:8px 10px;
@@ -107,15 +110,22 @@ export default {
     }
 }
 .book {
-    border:1px red solid;
-    height:100%;
-    flex:3.7;
-    border-bottom:1px #DFDFDF solid;
-    .book-search{
-        margin:15px 15px 20px 15px;
+    // border: 1px red solid;
+    flex: 4.25;
+    border-bottom: 1px #DFDFDF solid;
+    .book-search {
+        margin: 15px 11px 20px 15px;
     }
-    .search-result-tip{
-        margin:0 0 20px 15px;
+    .search-result-tip {
+        margin: 0 0 20px 15px;
+        span {
+            color:$base-color;
+            font-weight: bold;
+        }
     }
+}
+.paging-layout{
+    margin: 20px;
+    @include displayCenter;
 }
 </style>

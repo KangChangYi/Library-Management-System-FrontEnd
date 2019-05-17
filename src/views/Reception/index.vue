@@ -10,14 +10,18 @@
                 <el-button type="primary" round @click="goLogin()">登录 / 注册</el-button>
             </div>
         </div>
+        <!-- 子路由 -->
         <router-view></router-view>
+        <!-- 组件 -->
+        <Footer></Footer>
     </div>
 </template>
 
 <script>
+import Footer from '@/components/footer/index.vue';
 
 export default {
-    name: 'login',
+    name: 'Reception',
     data() {
         return { };
     },
@@ -32,13 +36,15 @@ export default {
     computed: {
     },
     watch: {},
-    components: {},
+    components: {
+        Footer,
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 .Reception-layout {
-    height: 100vh;
+    height:100%;
     padding-top:70px;
     .navigate-bar {
         width: 100%;
@@ -48,11 +54,12 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 9;
     }
 }
 .navigate-bar-content{
     margin:auto;
-    width:1050px;
+    width:$layout-width;
     @include displayCenter($justify-content:space-between);
     .icon {
         height:0.7em !important;
@@ -61,7 +68,8 @@ export default {
     }
 }
 .bar-box{
-    width:770px;
+    // 导航栏按钮盒子
+    width:745px;
     @include displayCenter($justify-content:flex-start);
     .bar{
         font-size:$font-size-medium;
@@ -77,6 +85,4 @@ export default {
         margin-left:60px;
     }
 }
-
-
 </style>
