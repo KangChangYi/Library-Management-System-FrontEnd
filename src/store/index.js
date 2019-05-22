@@ -8,17 +8,22 @@ import userInfo from './modules/userInfo';
 
 import mutations from './mutations';
 
+import actions from './actions';
+
 Vue.use(Vuex);
 
 const state = {
-    count: 1,
+    selectedBookType: '全部类别',
+    bookInfoList: [],
+    totalCount: 0,
 };
 
 export default new Vuex.Store({
     modules: {
         userInfo,
     },
-    mutations,
+    actions,
     state,
+    mutations,
     getters,
 });

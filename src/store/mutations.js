@@ -1,5 +1,11 @@
 export default {
-    add(state) {
-        state.count += 1;
+    changeBookInfoList(state, bookInfoList) {
+        state.bookInfoList = bookInfoList;
+    },
+    changeBookTypeSelected(state, type) {
+        state.selectedBookType = type;
+    },
+    changeBookInfoListTotalCount(state, number) {
+        state.totalCount = number;
     },
 };

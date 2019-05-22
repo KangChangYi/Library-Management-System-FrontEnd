@@ -8,24 +8,26 @@
                         类别
                     </label>
                     <ul>
-                        <li v-for="type in bookType" :item="type.typeName" :key="type.typeName">
+                        <li v-for="type in bookType" :item="type.typeName" :key="type.typeName"
+                        @click="handleBookType(type)">
                             {{type.typeName}}
                         </li>
                     </ul>
             </aside>
             <div class="book">
                 <div class="book-search">
-                    <el-input placeholder="请输入书名" prefix-icon="el-icon-search" v-model="searchText">
+                    <el-input placeholder="请输入书名" prefix-icon="el-icon-search"
+                    v-model="searchText" @change="searchBookInfo">
                     </el-input>
                 </div>
-                <div class="search-result-tip" v-if="searchedBookList">
-                    "全部类别" 共有<span>{{result}}</span> 本书
+                <div class="search-result-tip">
+                    "{{selectedBookType}}" 共有<span> {{totalCount}} </span>本书
                 </div>
                 <!-- 组件 -->
                 <BookList></BookList>
                 <div class="paging-layout">
                     <!-- 组件 -->
-                    <Paging></Paging>
+                    <Paging @changePage='changePage'></Paging>
                 </div>
             </div>
       </div>
@@ -33,33 +35,63 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+// 组件
 import BookList from './components/bookList.vue';
 import Paging from '@/components/paging/index.vue';
 import pageHeader from '@/components/header/index.vue';
-import { bookTypeList } from '@/api/bookType';
+// 接口
+import { getAllBookType } from '@/api/bookType';
+import { getAllBookInfo } from '@/api/bookInfo';
 
 export default {
     name: 'Classification',
     data() {
         return {
-            searchedBookList: 'has',
+            bookType: [],
             searchText: '',
-            bookType: [
-                // { typeName: '文学类' },
-                // { typeName: '科研类' },
-                // { typeName: '技术类' },
-            ],
-            result: 12,
         };
     },
     created() {
-        bookTypeList().then((res) => {
-            this.bookType = res.data;
+        // 图书信息
+        getAllBookInfo(1).then((res) => {
+            this.$store.commit('changeBookInfoList', res.data.bookInfo);
+            this.$store.commit('changeBookInfoListTotalCount', res.data.totalCount);
+        });
+        // 图书类别
+        getAllBookType().then((res) => {
+            const typeList = res.data;
+            typeList.unshift({ typeName: '全部类别' });
+            this.bookType = typeList;
         });
     },
-    methods: {},
+    methods: {
+        // 改变图书类别
+        handleBookType(type) {
+            this.$store.dispatch('handleBookType', {
+                type: type.typeName,
+                id: type._id,
+            });
+        },
+        // 搜索图书
+        searchBookInfo(name) {
+            this.$store.dispatch('searchBookInfo', {
+                name,
+            });
+        },
+        // 子组件方法 页码改变
+        changePage(pageNumber) {
+            getAllBookInfo(pageNumber).then((res) => {
+                this.$store.commit('changeBookInfoList', res.data.bookInfo);
+            });
+        },
+    },
     computed: {
-
+        ...mapState([
+            'bookInfoList',
+            'selectedBookType',
+            'totalCount',
+        ]),
     },
     watch: {},
     components: {
@@ -69,6 +101,7 @@ export default {
     },
 };
 </script>
+
 <style lang="scss" scoped>
 .book-classification-layout {
     width:$layout-width + 20px;

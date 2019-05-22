@@ -15,16 +15,25 @@
 </template>
 
 <script>
+// 组件
 import pageHeader from '@/components/header/index.vue';
 import Paging from '@/components/paging/index.vue';
 import cTable from '@/components/table/index.vue';
+// api
+import { getAllBookInfo } from '@/api/bookInfo';
 
 export default {
     name: 'Situation',
     data() {
         return {};
     },
-    created() { },
+    created() {
+        getAllBookInfo(1).then((res) => {
+            console.log(res.data.bookInfo);
+            this.$store.commit('changeBookInfoList', res.data.bookInfo);
+            this.$store.commit('changeBookInfoListTotalCount', res.data.totalCount);
+        });
+    },
     methods: {},
     computed: {},
     watch: {},

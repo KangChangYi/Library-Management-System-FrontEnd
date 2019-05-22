@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export function bookTypeList() {
+export function getAllBookType() {
     return request({
         url: '/api/bookType',
         method: 'GET',

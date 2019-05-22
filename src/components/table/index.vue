@@ -1,17 +1,19 @@
 <template>
     <div class="table-layout">
-        <el-table :data="bookSituation">
-                <el-table-column prop="bookName" min-width="110" label="书名"> </el-table-column>
-                <el-table-column prop="auth" label="作者"> </el-table-column>
+        <el-table :data="bookInfoList">
+                <el-table-column prop="bookName" min-width="110" label="书名"
+                show-overflow-tooltip></el-table-column>
+                <el-table-column prop="author" label="作者"
+                show-overflow-tooltip></el-table-column>
                 <el-table-column prop="press" label="出版社"> </el-table-column>
-                <el-table-column prop="date" label="出版日期"> </el-table-column>
+                <el-table-column prop="publicationDate" label="出版日期"> </el-table-column>
                 <el-table-column prop="totalNumber" :formatter="formatter" label="馆藏总数">
                 </el-table-column>
                 <el-table-column prop="borrowNumber" :formatter="formatter" label="可借数">
                 </el-table-column>
                 <el-table-column prop="type" label="类别">
                     <template slot-scope="scope">
-                        <Tag :name="scope.row.type"></Tag>
+                        <Tag :name="scope.row.bookType.typeName"></Tag>
                     </template>
                 </el-table-column>
         </el-table>
@@ -19,6 +21,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+// 组件
 import Tag from '@/components/tag/index.vue';
 
 export default {
@@ -50,7 +54,11 @@ export default {
             return `${cellValue}本`;
         },
     },
-    computed: {},
+    computed: {
+        ...mapState([
+            'bookInfoList',
+        ]),
+    },
     watch: {},
     components: {
         Tag,

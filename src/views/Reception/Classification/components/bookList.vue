@@ -1,15 +1,18 @@
 <template>
     <div class="book-list">
-        <div class="book-list-item" v-for="book in bookList" :item="book.name" :key="book.name">
-            <img src="../../../../assets/book1.png"/>
+        <div class="book-list-item" v-for="book in bookInfoList" :item="book._id" :key="book._id">
+            <img :src="book.image"/>
             <div class="book-description">
                 <div class="book-name">
-                    数据结构与算法
+                    {{book.bookName}}
                 </div>
                 <!-- 组件 -->
-                <Tag name="算法"></Tag>
-                <small>陶哲轩</small>
-                <small>剩余 <span>5</span> 本</small>
+                <Tag :name="book.bookType.typeName"></Tag>
+                <br>
+                <div class="book-auth">
+                    <small>{{book.author}}</small>
+                    <small>剩余<span> {{book.books | filterSurplusBook}} </span>本</small>
+                </div>
             </div>
         </div>
     </div>
@@ -17,27 +20,30 @@
 
 <script>
 import Tag from '@/components/tag/index.vue';
+import { mapState } from 'vuex';
 
 export default {
     name: 'bookList',
     data() {
-        return {
-            bookList: [
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-                { name: '123' },
-            ],
-        };
+        return { };
     },
     created() { },
-    methods: {},
-    computed: {},
-    watch: {},
+    methods: { },
+    // 计算剩余图书数量
+    filters: {
+        filterSurplusBook(books) {
+            let number = 0;
+            books.forEach((val) => {
+                if (!val.isLend) { number += 1; }
+            });
+            return number;
+        },
+    },
+    computed: {
+        ...mapState([
+            'bookInfoList',
+        ]),
+    },
     components: {
         Tag,
     },
@@ -46,6 +52,8 @@ export default {
 
 <style lang='scss' scoped>
 .book-list {
+    // 固定高度以免书本数量少的时候布局出现问题
+    height:630px;
     padding-left:7px;
     &:after {
         content: '';
@@ -78,9 +86,15 @@ export default {
     width:100%;
     .book-name {
         font-weight: bold;
-        margin-bottom:5px;
+        margin:5px 0 5px 0;
+        text-overflow:ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
-    small {
+    .book-auth{
+        margin-top:5px;
+    }
+    small + small {
         margin-left:5px;
     }
     span {
@@ -88,8 +102,4 @@ export default {
         color: $base-color;
     }
 }
-
-// .book-list-item + .book-list-item{
-//     margin-left:20px;
-// }
 </style>
