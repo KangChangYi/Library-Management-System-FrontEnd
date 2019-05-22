@@ -8,4 +8,7 @@ export default {
     changeBookInfoListTotalCount(state, number) {
         state.totalCount = number;
     },
+    changeUserInfo(state, userInfo) {
+        state.userInfo = userInfo;
+    },
 };

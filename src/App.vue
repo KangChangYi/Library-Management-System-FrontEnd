@@ -8,15 +8,15 @@
 export default {
     name: 'App',
     data() {
-        return {};
+        return { };
     },
-    created() {},
-    methods: {},
-    computed: {},
-    watch: {},
-    components: {},
+    created() { },
+    methods: { },
+    computed: { },
+    watch: { },
+    components: { },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 </style>

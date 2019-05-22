@@ -1,28 +1,18 @@
-// FIXME:该文件为示例文件，请及时修改或者删除
 import request from '@/utils/request';
 
-export function register(email, password) {
+// 注册
+export function register(role, email, password) {
     return request({
-        url: '/users/register',
-        method: 'post',
+        url: '/api/user',
+        method: 'POST',
         data: {
+            role,
             email,
             password,
-            name: email,
         },
     });
 }
 
-export function login(email, password) {
-    return request({
-        url: '/users/login',
-        method: 'post',
-        data: {
-            email,
-            password,
-        },
-    });
-}
 
 export function changePassword(oldPassword, newPassword) {
     return request({

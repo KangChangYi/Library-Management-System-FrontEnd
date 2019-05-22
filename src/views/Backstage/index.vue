@@ -1,5 +1,22 @@
 <template>
-  <div class="about">
-    <a href="https://github.com/Fearless-Studio" target="_blank"><h1>Fearless Studio</h1></a>
+  <div>
+      后台
   </div>
 </template>
+
+<script>
+export default {
+    name: 'login',
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {},
+    computed: {},
+    watch: {},
+    components: {},
+};
+</script>
+
+<style lang='scss' scoped>
+</style>

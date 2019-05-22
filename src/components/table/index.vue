@@ -2,14 +2,15 @@
     <div class="table-layout">
         <el-table :data="bookInfoList">
                 <el-table-column prop="bookName" min-width="110" label="书名"
-                show-overflow-tooltip></el-table-column>
+                    show-overflow-tooltip></el-table-column>
                 <el-table-column prop="author" label="作者"
-                show-overflow-tooltip></el-table-column>
+                    show-overflow-tooltip></el-table-column>
                 <el-table-column prop="press" label="出版社"> </el-table-column>
-                <el-table-column prop="publicationDate" label="出版日期"> </el-table-column>
-                <el-table-column prop="totalNumber" :formatter="formatter" label="馆藏总数">
+                <el-table-column prop="publicationDate" align="center" :formatter="dateFormat"
+                    label="出版日期"> </el-table-column>
+                <el-table-column prop="books" align="center" :formatter="totalFormat" label="馆藏总数">
                 </el-table-column>
-                <el-table-column prop="borrowNumber" :formatter="formatter" label="可借数">
+                <el-table-column prop="books" align="center" :formatter="isLendFormat" label="可借数">
                 </el-table-column>
                 <el-table-column prop="type" label="类别">
                     <template slot-scope="scope">
@@ -28,30 +29,25 @@ import Tag from '@/components/tag/index.vue';
 export default {
     name: 'table',
     data() {
-        return {
-            bookSituation: [{
-                bookName: '你不知道的 JavaScript 上',
-                auth: '阮一峰',
-                press: '清华出版社',
-                date: new Date(),
-                totalNumber: '12',
-                borrowNumber: '5',
-                type: '技术类',
-            }, {
-                bookName: '你不知道的 JavaScript 上',
-                auth: '阮一峰',
-                press: '清华出版社',
-                date: new Date(),
-                totalNumber: '12',
-                borrowNumber: '5',
-                type: '技术类',
-            }],
-        };
+        return { };
     },
     created() {},
     methods: {
-        formatter(row, column, cellValue) {
-            return `${cellValue}本`;
+        // 格式化馆藏总数
+        totalFormat(row, column, cellValue) {
+            return `${cellValue.length}本`;
+        },
+        // 格式化可借数
+        isLendFormat(row, column, cellValue) {
+            let number = 0;
+            cellValue.forEach((val) => {
+                if (!val.isLend) { number += 1; }
+            });
+            return `${number}本`;
+        },
+        // 格式化日期
+        dateFormat(row, column, cellValue) {
+            return new Date(cellValue).toLocaleDateString();
         },
     },
     computed: {

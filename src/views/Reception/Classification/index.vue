@@ -8,8 +8,8 @@
                         类别
                     </label>
                     <ul>
-                        <li v-for="type in bookType" :item="type.typeName" :key="type.typeName"
-                        @click="handleBookType(type)">
+                        <li v-for="type in bookType" :item="type.typeName"
+                        :key="type.typeName" @click="handleBookType(type)">
                             {{type.typeName}}
                         </li>
                     </ul>

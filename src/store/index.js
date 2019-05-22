@@ -16,6 +16,7 @@ const state = {
     selectedBookType: '全部类别',
     bookInfoList: [],
     totalCount: 0,
+    userInfo: {},
 };
 
 export default new Vuex.Store({

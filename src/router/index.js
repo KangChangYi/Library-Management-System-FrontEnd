@@ -70,7 +70,6 @@ NProgress.configure({
  */
 router.beforeEach((to, from, next) => {
     NProgress.start();// 每次切换页面时，调用进度条
-    document.title = to.meta.title;// 页面标题
     // 合法性校验
     if (to.meta.auth) {
         console.log('into auth');

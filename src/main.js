@@ -6,7 +6,6 @@ import router from './router';
 import store from './store';
 import '@/styles/theme/element-variables.scss';
 
-
 import './icons';
 
 import './styles/index.scss';

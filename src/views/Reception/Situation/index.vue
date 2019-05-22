@@ -8,7 +8,7 @@
             <cTable></cTable>
             <div class="paging-layout">
                 <!-- 组件 -->
-                <Paging></Paging>
+                <Paging @changePage="changePage"></Paging>
             </div>
       </div>
     </div>
@@ -28,13 +28,20 @@ export default {
         return {};
     },
     created() {
+        // 图书信息
         getAllBookInfo(1).then((res) => {
-            console.log(res.data.bookInfo);
             this.$store.commit('changeBookInfoList', res.data.bookInfo);
             this.$store.commit('changeBookInfoListTotalCount', res.data.totalCount);
         });
     },
-    methods: {},
+    methods: {
+        // 切换页码 图书信息
+        changePage(pageNumber) {
+            getAllBookInfo(pageNumber).then((res) => {
+                this.$store.commit('changeBookInfoList', res.data.bookInfo);
+            });
+        },
+    },
     computed: {},
     watch: {},
     components: {
