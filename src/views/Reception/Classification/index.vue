@@ -27,7 +27,7 @@
                 <BookList></BookList>
                 <div class="paging-layout">
                     <!-- 组件 -->
-                    <Paging @changePage='changePage'></Paging>
+                    <Paging @changePage='changePage' :totalCount="total"></Paging>
                 </div>
             </div>
       </div>
@@ -50,13 +50,14 @@ export default {
         return {
             bookType: [],
             searchText: '',
+            total: 0,
         };
     },
     created() {
         // 图书信息
         getAllBookInfo(1).then((res) => {
             this.$store.commit('changeBookInfoList', res.data.bookInfo);
-            this.$store.commit('changeBookInfoListTotalCount', res.data.totalCount);
+            this.total = res.data.totalCount;
         });
         // 图书类别
         getAllBookType().then((res) => {
@@ -123,6 +124,7 @@ export default {
         padding:8px 10px;
         font-size:$font-size-large;
         color:$text-color-primary;
+        font-weight: bold;
     }
     ul {
          list-style-type:none;

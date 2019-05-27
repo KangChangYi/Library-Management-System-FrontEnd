@@ -27,7 +27,7 @@ import { mapState } from 'vuex';
 import Tag from '@/components/tag/index.vue';
 
 export default {
-    name: 'table',
+    name: 'Table',
     data() {
         return { };
     },

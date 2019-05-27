@@ -4,20 +4,21 @@
             <div class="navigate-bar-content">
                 <svg-icon icon-class="logo" class-name="icon"/>
                 <nav class="bar-box">
-                    <router-link class="bar" :to="{ name:'Classification'}">首页</router-link>
-                    <router-link class="bar" :to="{ name:'Situation'}">图书借阅情况</router-link>
+                    <router-link class="bar" :to="{ path:'/Classification'}">首页</router-link>
+                    <router-link class="bar" :to="{ path:'/Situation'}">图书借阅情况</router-link>
                 </nav>
                 <el-button type="primary" round @click="goLogin()">登录 / 注册</el-button>
             </div>
         </div>
         <!-- 子路由 -->
-        <router-view></router-view>
+        <router-view/>
         <!-- 组件 -->
         <Footer></Footer>
     </div>
 </template>
 
 <script>
+import { getToken } from '@/utils/auth';
 import Footer from '@/components/footer/index.vue';
 
 export default {
@@ -27,10 +28,17 @@ export default {
     },
     created() { },
     methods: {
+        // 有token则自动登陆
         goLogin() {
-            this.$router.push({
-                name: 'Login',
-            });
+            if (getToken()) {
+                this.$router.push({
+                    path: '/Backstage',
+                });
+            } else {
+                this.$router.push({
+                    path: '/Login',
+                });
+            }
         },
     },
     computed: {

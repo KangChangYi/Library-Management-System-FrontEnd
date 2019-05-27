@@ -1,7 +1,11 @@
+/* eslint-disable import/no-cycle */
 import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+
+import store from '@/store/index';
+import { getToken } from '@/utils/auth';
 
 Vue.use(Router);
 
@@ -11,44 +15,30 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            name: 'Reception',
+            name: '前台',
             component: () => import('@/views/Reception/index.vue'),
+            redirect: 'Classification',
             children: [
                 {
-                    path: '/',
-                    name: 'Classification',
-                    meta: {
-                        title: '图书分类',
-                        auth: false, // 是否需要登录
-                        keepAlive: false,
-                    },
+                    path: '/Classification',
+                    name: '图书分类',
                     component: () => import('@/views/Reception/Classification/index.vue'),
                 },
                 {
                     path: '/Situation',
-                    name: 'Situation',
-                    meta: {
-                        title: '图书借阅情况',
-                        auth: false, // 是否需要登录
-                        keepAlive: false,
-                    },
+                    name: '图书借阅情况',
                     component: () => import('@/views/Reception/Situation/index.vue'),
                 },
             ],
         },
         {
-            path: '/Backstage',
-            name: 'Backstage',
-            component: () => import('@/views/Backstage/index.vue'),
-        },
-        {
             path: '/Login',
-            name: 'Login',
+            name: '登录',
             component: () => import('@/views/Login/index.vue'),
         },
         {
             path: '/Register',
-            name: 'Register',
+            name: '注册',
             component: () => import('@/views/Register/index.vue'),
         },
     ],
@@ -68,19 +58,35 @@ NProgress.configure({
 /**
  * 路由前置检查
  */
-router.beforeEach((to, from, next) => {
-    NProgress.start();// 每次切换页面时，调用进度条
-    // 合法性校验
-    if (to.meta.auth) {
-        console.log('into auth');
+
+const baseRouter = {
+    图书分类: true,
+    图书借阅情况: true,
+    登录: true,
+    注册: true,
+};
+
+router.beforeEach(async (to, from, next) => {
+    NProgress.start();
+    // 动态路由
+    if (!getToken()) {
+        if (!baseRouter[to.name]) {
+            next({ path: '/Login' });
+        } else {
+            next();
+        }
+    } else if (!store.state.hasPermission) {
+        store.dispatch('FETCH_PERMISSION')
+            .then(() => {
+                next({ path: to.path });
+            });
+    } else {
         next();
     }
-    next();
 });
 
 router.afterEach(() => {
-    // 在即将进入新的页面组件前操作
-    NProgress.done();// 在即将进入新的页面组件前，关闭掉进度条
+    NProgress.done(); // 在即将进入新的页面组件前，关闭掉进度条
 });
 
 export default router;

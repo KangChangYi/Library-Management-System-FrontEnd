@@ -1,14 +1,17 @@
 <template>
     <el-pagination layout="prev, pager, next" :total="totalCount"
-    :page-size="8" @current-change="handlePaging">
+    :page-size="pageSize || 8" @current-change="handlePaging">
     </el-pagination>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 
 export default {
     name: 'paging',
+    props: {
+        totalCount: Number,
+        pageSize: Number,
+    },
     data() {
         return {};
     },
@@ -19,9 +22,6 @@ export default {
         },
     },
     computed: {
-        ...mapState([
-            'totalCount',
-        ]),
     },
     watch: {},
     components: {},

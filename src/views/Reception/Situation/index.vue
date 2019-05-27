@@ -8,7 +8,7 @@
             <cTable></cTable>
             <div class="paging-layout">
                 <!-- 组件 -->
-                <Paging @changePage="changePage"></Paging>
+                <Paging @changePage="changePage" :totalCount="totalCount"></Paging>
             </div>
       </div>
     </div>
@@ -25,13 +25,15 @@ import { getAllBookInfo } from '@/api/bookInfo';
 export default {
     name: 'Situation',
     data() {
-        return {};
+        return {
+            totalCount: 0,
+        };
     },
     created() {
         // 图书信息
         getAllBookInfo(1).then((res) => {
             this.$store.commit('changeBookInfoList', res.data.bookInfo);
-            this.$store.commit('changeBookInfoListTotalCount', res.data.totalCount);
+            this.totalCount = res.data.totalCount;
         });
     },
     methods: {

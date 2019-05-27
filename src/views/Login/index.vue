@@ -1,5 +1,6 @@
 <template>
     <div class="login-layout">
+        <div class="bg"></div>
         <div class="form-layout">
             <!-- logo -->
             <div class="logo-box">
@@ -29,6 +30,7 @@
 <script>
 import inputWidthIcon from '@/components/inputWithIcon/index.vue';
 import { login } from '@/api/login';
+import { setToken } from '@/utils/auth';
 
 export default {
     name: 'Login',
@@ -48,21 +50,25 @@ export default {
             const { email, password } = this.formInfo;
             // 验证完整性
             const result = this.validate();
+            if (!result) { return; }
             // 登录 api
             const token = await login(email, password)
                 .then(res => res.data)
-                .catch(() => false);
+                .catch(err => err);
             // 判断
             if (!token) {
                 this.$message.warning('请输入正确的用户名或密码');
             } else {
-                console.log(token);
+                setToken(token);
+                this.$router.push({
+                    path: '/Backstage',
+                });
             }
             // this.isAutoLogin
         },
         clickGoRegister() {
             this.$router.push({
-                name: 'Register',
+                path: '/Register',
             });
         },
         // 邮箱输入框变化
@@ -94,6 +100,17 @@ export default {
 .login-layout {
     min-height:100vh;
     padding-top:150px;
+    .bg {
+        width:100vw;
+        height:100vh;
+        background:url("../../assets/login-bg2.jpg");
+        background-size: cover;
+        background-position: center;
+        opacity:0.2;
+        position: fixed;
+        top:0;
+        left:0;
+    }
     .form-layout {
         width:420px;
         height:460px;
@@ -101,6 +118,8 @@ export default {
         border:1px #DFDFDF solid;
         border-radius: 5px;
         margin:0 auto;
+        position: relative;
+        z-index: 1;
         .logo-box {
             width:fit-content;
             margin:0 auto;
@@ -141,6 +160,8 @@ export default {
     width:fit-content;
     margin:0 auto;
     padding-top:150px;
+    position: relative;
+    z-index: 1;
     .footer-icon {
         width:32px;
         height:32px;

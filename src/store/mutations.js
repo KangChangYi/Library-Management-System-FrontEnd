@@ -11,4 +11,10 @@ export default {
     changeUserInfo(state, userInfo) {
         state.userInfo = userInfo;
     },
+    changeLoginStatus(state, isLogin) {
+        state.IS_LOGIN = isLogin;
+    },
+    changePermission(state, Permission) {
+        state.hasPermission = Permission;
+    },
 };

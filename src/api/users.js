@@ -13,24 +13,30 @@ export function register(role, email, password) {
     });
 }
 
-
-export function changePassword(oldPassword, newPassword) {
+// 获取自身数据
+export function getMe() {
     return request({
-        url: '/users',
-        method: 'patch',
-        data: {
-            password: oldPassword,
-            repassword: newPassword,
-        },
+        url: '/api/user/me',
+        method: 'GET',
     });
 }
 
-export function userInfo() {
+// 获取所有用户信息，除管理员
+export function getUserList(page) {
     return request({
-        url: '/users',
-        method: 'get',
+        url: `/api/user/page/${page}`,
+        method: 'GET',
     });
 }
+
+// 账户通过审核
+export function passAuth(id) {
+    return request({
+        url: `/api/user/passAuth/${id}`,
+        method: 'PUT',
+    });
+}
+
 
 export function updateUserInfo(info) {
     return request({

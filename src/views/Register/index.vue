@@ -1,5 +1,6 @@
 <template>
     <div class="login-layout">
+        <div class="bg"></div>
         <div class="form-layout">
             <!-- logo -->
             <div class="logo-box">
@@ -68,6 +69,7 @@ export default {
         async clickRegister() {
             const role = this.roleId[this.role]._id;
             const { email, password } = this.formInfo;
+            // 验证完整性
             const result = this.validate();
             if (!result) { return; }
             // 注册api
@@ -80,15 +82,17 @@ export default {
             if (!userInfo) {
                 this.$message.error('邮箱已被注册');
             } else {
-                this.$router.push({
-                    name: 'Backstage',
-                });
+                this.$message.success('已注册，请等待审核');
+                console.log(userInfo);
+                // this.$router.push({
+                //     name: 'Backstage',
+                // });
             }
         },
         // 跳转到登录
         clickGoLogin() {
             this.$router.push({
-                name: 'Login',
+                path: '/Login',
             });
         },
         // 邮箱输入框变化
@@ -110,11 +114,11 @@ export default {
         validate() {
             const { email, password, confirmPassword } = this.formInfo;
             // 判断
-            if (!email || !password || !confirmPassword) {
-                this.$message.warning('请将表单填写完整');
-                return false;
+            if (email && password && confirmPassword) {
+                return true;
             }
-            return true;
+            this.$message.warning('请将表单填写完整');
+            return false;
         },
     },
     computed: { },
@@ -129,6 +133,17 @@ export default {
 .login-layout {
     min-height:100vh;
     padding-top:150px;
+    .bg {
+        width:100vw;
+        height:100vh;
+        background:url("../../assets/login-bg2.jpg");
+        background-size: cover;
+        background-position: center;
+        opacity:0.2;
+        position: fixed;
+        top:0;
+        left:0;
+    }
     .form-layout {
         width:420px;
         height:550px;
@@ -136,6 +151,8 @@ export default {
         border:1px #DFDFDF solid;
         border-radius: 5px;
         margin:0 auto;
+        position: relative;
+        z-index: 1;
         .logo-box {
             width:fit-content;
             margin:0 auto;
@@ -176,6 +193,8 @@ export default {
     width:fit-content;
     margin:0 auto;
     padding-top:150px;
+    position: relative;
+    z-index: 1;
     .footer-icon {
         width:32px;
         height:32px;
