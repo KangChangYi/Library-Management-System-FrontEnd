@@ -13,14 +13,13 @@
                 </div>
                 <div class="header-right-box">
                     <!-- 头像下拉菜单 -->
-                    <el-dropdown @command="clickDropDown">
+                    <el-dropdown @command="clickDropDown" trigger="click">
                         <div class="user-avatar-box">
                             <img src="@/assets/icon-avatar.png">
                             <i class="el-icon-caret-bottom"></i>
                         </div>
                         <el-dropdown-menu slot="dropdown">
-                            <!-- <el-dropdown-item command="项目设置">项目设置</el-dropdown-item> -->
-                            <el-dropdown-item command="修改密码">修改密码</el-dropdown-item>
+                            <el-dropdown-item command="设置">设置</el-dropdown-item>
                             <el-dropdown-item command="登出" divided>
                                 <span style="color:#F56C6C">退出登录</span>
                             </el-dropdown-item>
@@ -38,6 +37,7 @@
 </template>
 
 <script>
+// 组件
 import naviMenu from './components/naviMenu/index.vue';
 
 export default {
@@ -55,9 +55,11 @@ export default {
         this.pageTitle = this.$route.name;
     },
     methods: {
+        // 展开收缩侧边导航栏
         clickLeftIndent() {
             this.isCollapse = !this.isCollapse;
         },
+        // 点击头像下拉菜单
         clickDropDown(command) {
             if (command === '登出') {
                 this.$confirm('即将退出登录, 是否继续?', '提示', {
@@ -68,6 +70,10 @@ export default {
                     this.$router.push({ path: '/Login' });
                 }).catch(() => {
                     this.$message('取消登出!');
+                });
+            } else if (command === '设置') {
+                this.$router.push({
+                    path: '/SetUp',
                 });
             }
         },
@@ -80,7 +86,6 @@ export default {
     },
     components: { naviMenu },
 };
-
 </script>
 
 <style lang='scss' scoped>

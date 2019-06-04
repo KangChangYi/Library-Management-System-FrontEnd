@@ -50,13 +50,14 @@ export default {
             const { email, password } = this.formInfo;
             // 验证完整性
             const result = this.validate();
-            if (!result) { return; }
+            if (!result) { return false; }
             // 登录 api
-            const token = await login(email, password)
+            const token = await login({ email, password })
                 .then(res => res.data)
                 .catch(err => err);
             // 判断
-            if (!token) {
+            console.log(token);
+            if (token.status === 400) {
                 this.$message.warning('请输入正确的用户名或密码');
             } else {
                 setToken(token);
@@ -64,6 +65,7 @@ export default {
                     path: '/Backstage',
                 });
             }
+            return false;
             // this.isAutoLogin
         },
         clickGoRegister() {

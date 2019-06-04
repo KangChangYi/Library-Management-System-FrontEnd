@@ -1,7 +1,7 @@
 <template>
   <div class="book-classification-layout">
       <!-- 组件 -->
-      <page-header name="Classification"></page-header>
+      <page-header name="图书分类"></page-header>
       <div class="content-layout">
             <aside class="book-categories">
                     <label class="categories">
@@ -17,11 +17,11 @@
             <div class="book">
                 <div class="book-search">
                     <el-input placeholder="请输入书名" prefix-icon="el-icon-search"
-                    v-model="searchText" @change="searchBookInfo">
+                    v-model="searchName" @change="searchBookInfo">
                     </el-input>
                 </div>
                 <div class="search-result-tip">
-                    "{{selectedBookType}}" 共有<span> {{totalCount}} </span>本书
+                    "{{type}}" 共有<span> {{total}} </span>本书
                 </div>
                 <!-- 组件 -->
                 <BookList></BookList>
@@ -35,65 +35,75 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 // 组件
 import BookList from './components/bookList.vue';
 import Paging from '@/components/paging/index.vue';
 import pageHeader from '@/components/header/index.vue';
 // 接口
-import { getAllBookType } from '@/api/bookType';
-import { getAllBookInfo } from '@/api/bookInfo';
+import { getBookType } from '@/api/bookType';
+import { getBookInfo } from '@/api/bookInfo';
 
 export default {
     name: 'Classification',
     data() {
         return {
             bookType: [],
-            searchText: '',
             total: 0,
+            searchName: '',
+            type: '全部类别',
+            typeId: '',
         };
     },
     created() {
         // 图书信息
-        getAllBookInfo(1).then((res) => {
-            this.$store.commit('changeBookInfoList', res.data.bookInfo);
-            this.total = res.data.totalCount;
-        });
+        this.getBookData(1);
         // 图书类别
-        getAllBookType().then((res) => {
-            const typeList = res.data;
-            typeList.unshift({ typeName: '全部类别' });
-            this.bookType = typeList;
-        });
+        this.getType();
     },
     methods: {
         // 改变图书类别
         handleBookType(type) {
-            this.$store.dispatch('handleBookType', {
-                type: type.typeName,
-                id: type._id,
-            });
+            console.log(type);
+            this.type = type.typeName;
+            this.typeId = type._id || false;
+            this.getBookData();
         },
         // 搜索图书
         searchBookInfo(name) {
-            this.$store.dispatch('searchBookInfo', {
-                name,
-            });
+            this.searchName = name;
+            this.getBookData();
         },
         // 子组件方法 页码改变
         changePage(pageNumber) {
-            getAllBookInfo(pageNumber).then((res) => {
+            this.getBookData(pageNumber);
+        },
+        // 获取图书信息
+        getBookData(page = 1) {
+            const { type, typeId, searchName } = this;
+            console.log(type, searchName, typeId);
+            let reqBody = {};
+            if (searchName && typeId) { // 图书类型 和 搜索书名
+                reqBody = { type: typeId, name: searchName };
+            } else if (searchName) { // 搜索书名
+                reqBody = { name: searchName };
+            } else if (typeId) { // 图书类型
+                reqBody = { type: typeId };
+            }
+            getBookInfo({ page, ...reqBody }).then((res) => {
                 this.$store.commit('changeBookInfoList', res.data.bookInfo);
+                this.total = res.data.totalCount;
+            });
+        },
+        // 获取图书类别
+        getType() {
+            getBookType().then((res) => {
+                const typeList = res.data;
+                typeList.unshift({ typeName: '全部类别' });
+                this.bookType = typeList;
             });
         },
     },
-    computed: {
-        ...mapState([
-            'bookInfoList',
-            'selectedBookType',
-            'totalCount',
-        ]),
-    },
+    computed: { },
     watch: {},
     components: {
         BookList,
@@ -162,5 +172,11 @@ export default {
 .paging-layout{
     margin: 20px;
     @include displayCenter;
+}
+.a{
+    font-size:20px;
+}
+.b{
+    font-size:15px;
 }
 </style>

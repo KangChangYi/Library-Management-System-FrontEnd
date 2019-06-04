@@ -3,7 +3,7 @@
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ name: name }">
-                {{name==="Classification" ? "图书分类" : "图书借阅情况"}}
+                {{name}}
             </el-breadcrumb-item>
         </el-breadcrumb>
     </header>

@@ -1,39 +1,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/no-cycle */
-import { getBookInfoByType, getAllBookInfo, getBookInfoBySearch } from '@/api/bookInfo';
 import { getMe } from '@/api/users';
 import router from '@/router/index';
 
 export default {
-    // 改变图书类别
-    async handleBookType({ commit }, { type, id }) {
-        console.log(`获取 ${type} 的图书信息`);
-        let result;
-        if (type === '全部类别') {
-            result = await getAllBookInfo().then(res => res.data);
-        } else {
-            result = await getBookInfoByType(id).then(res => res.data);
-        }
-        commit('changeBookInfoList', result.bookInfo);
-        commit('changeBookInfoListTotalCount', result.totalCount);
-        commit('changeBookTypeSelected', type);
-    },
-
-    // 改变搜索图书
-    async searchBookInfo({ commit }, { name }) {
-        console.log(`搜索图书 ${name}`);
-        let result;
-        if (name) {
-            result = await getBookInfoBySearch(name).then(res => res.data);
-            commit('changeBookTypeSelected', name);
-        } else {
-            result = await getAllBookInfo().then(res => res.data);
-            commit('changeBookTypeSelected', '全部类别');
-        }
-        commit('changeBookInfoList', result.bookInfo);
-        commit('changeBookInfoListTotalCount', result.totalCount);
-    },
-
     // 动态增加路由
     async FETCH_PERMISSION({ commit }) {
         const role = await getMe().then(res => res.data.role.roleName);
@@ -42,7 +12,6 @@ export default {
         commit('changePermission', true);
     },
 };
-
 
 // 管理员路由权限
 const manegeRoutes = [{
@@ -61,9 +30,19 @@ const manegeRoutes = [{
         component: () => import('@/views/Backstage/BookManage/index.vue'),
     },
     {
+        path: '/BookManage/BookInfoAddModify',
+        name: '图书信息操作',
+        component: () => import('@/views/Backstage/BookManage/BookInfoAddModify/index.vue'),
+    },
+    {
         path: '/TypeManage',
         name: '类别管理',
         component: () => import('@/views/Backstage/TypeManage/index.vue'),
+    },
+    {
+        path: '/SetUp',
+        name: '设置',
+        component: () => import('@/views/Backstage/SetUp/index.vue'),
     }],
 }];
 

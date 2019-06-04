@@ -2,7 +2,7 @@
 <template>
     <div class="book-situation-layout">
       <!-- 组件 -->
-      <page-header name="Situation"></page-header>
+      <page-header name="图书借阅情况"></page-header>
       <div class="content-layout">
             <!-- 组件 -->
             <cTable></cTable>
@@ -20,7 +20,7 @@ import pageHeader from '@/components/header/index.vue';
 import Paging from '@/components/paging/index.vue';
 import cTable from '@/components/table/index.vue';
 // api
-import { getAllBookInfo } from '@/api/bookInfo';
+import { getBookInfo } from '@/api/bookInfo';
 
 export default {
     name: 'Situation',
@@ -31,16 +31,18 @@ export default {
     },
     created() {
         // 图书信息
-        getAllBookInfo(1).then((res) => {
-            this.$store.commit('changeBookInfoList', res.data.bookInfo);
-            this.totalCount = res.data.totalCount;
-        });
+        this.getBookData();
     },
     methods: {
-        // 切换页码 图书信息
+        // 切换页码
         changePage(pageNumber) {
-            getAllBookInfo(pageNumber).then((res) => {
+            this.getBookData(pageNumber);
+        },
+        // 获取图片信息
+        getBookData(page = 1) {
+            getBookInfo({ page }).then((res) => {
                 this.$store.commit('changeBookInfoList', res.data.bookInfo);
+                this.totalCount = res.data.totalCount;
             });
         },
     },

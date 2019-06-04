@@ -17,7 +17,7 @@ const router = new Router({
             path: '/',
             name: '前台',
             component: () => import('@/views/Reception/index.vue'),
-            redirect: 'Classification',
+            redirect: '/Classification',
             children: [
                 {
                     path: '/Classification',

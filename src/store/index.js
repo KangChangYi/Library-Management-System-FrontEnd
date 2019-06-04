@@ -18,10 +18,9 @@ const state = {
     hasPermission: false,
     // ROLE: '学生',
     userInfo: {},
-
     bookInfoList: [],
-    selectedBookType: '全部类别',
-    totalCount: 0,
+
+    serverUrl: 'http://localhost:3000',
 };
 
 export default new Vuex.Store({

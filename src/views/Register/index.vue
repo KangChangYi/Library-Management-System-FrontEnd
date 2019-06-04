@@ -73,7 +73,7 @@ export default {
             const result = this.validate();
             if (!result) { return; }
             // 注册api
-            const userInfo = await register(role, email, password)
+            const userInfo = await register({ role, email, password })
                 .then(res => res.data)
                 .catch(() => false);
             // 提交到 vuex

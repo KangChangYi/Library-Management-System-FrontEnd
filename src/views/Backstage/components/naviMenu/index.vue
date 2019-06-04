@@ -36,9 +36,10 @@ export default {
         // 获取当前用户可访问权限列表  生成菜单
         const routerList = JSON.parse(JSON.stringify(this.$router.options.routes));
         let temp = [];
+        // 从路由列表中找到 后台路由
         routerList.forEach((val) => {
             if (val.name === '后台') {
-                console.log(val.children);
+                console.log(val);
                 temp = val.children;
             }
         });
@@ -46,7 +47,8 @@ export default {
         temp.forEach((val, idx) => {
             temp[idx].icon = iconMap.get(val.name);
         });
-        this.route = temp;
+        // 过滤 不需要显示路由
+        this.route = temp.filter(val => typeof val.icon !== 'undefined');
     },
     methods: {},
     computed: {},
