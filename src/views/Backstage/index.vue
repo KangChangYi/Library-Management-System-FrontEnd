@@ -40,6 +40,8 @@
 // 组件
 import naviMenu from './components/naviMenu/index.vue';
 
+import { removeToken } from '@/utils/auth';
+
 export default {
     name: 'Backstage',
     data() {
@@ -67,6 +69,9 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
+                    // 登出 并清除token和动态路由信息
+                    removeToken();
+                    this.$store.commit('changePermission', false);
                     this.$router.push({ path: '/Login' });
                 }).catch(() => {
                     this.$message('取消登出!');

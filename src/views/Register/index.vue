@@ -74,10 +74,8 @@ export default {
             if (!result) { return; }
             // 注册api
             const userInfo = await register({ role, email, password })
-                .then(res => res.data)
+                .then(() => true)
                 .catch(() => false);
-            // 提交到 vuex
-            this.$store.commit('changeUserInfo', userInfo);
             //  判断
             if (!userInfo) {
                 this.$message.error('邮箱已被注册');

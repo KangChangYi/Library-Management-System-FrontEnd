@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-menu class="el-menu-vertical-demo" background-color="#3c3c3b"
-            text-color="#bfcbd9" :collapse="isCollapse" router default-active="当前借阅">
-
+            text-color="#bfcbd9" :collapse="isCollapse" router >
+                          <!-- :default-active="defaultActive" -->
             <el-menu-item v-for="item in route" :key="item.name" :item="item.name"
             :route="item.path" :index="item.name">
                 <i :class="item.icon"></i>
@@ -17,15 +17,18 @@
 
 <script>
 const iconMap = new Map()
+    // 管理员
     .set('注册审核', 'el-icon-s-claim')
     .set('图书管理', 'el-icon-s-management')
     .set('类别管理', 'el-icon-paperclip')
-    .set('当前借阅', 'el-icon-reading');
-
+    // 教师 学生
+    .set('图书借阅', 'el-icon-reading')
+    .set('当前借阅', 'el-icon-view');
 export default {
     name: 'naviMenu',
     data() {
         return {
+            // defaultActive: '图书借阅',
             route: [],
         };
     },
@@ -47,6 +50,8 @@ export default {
         temp.forEach((val, idx) => {
             temp[idx].icon = iconMap.get(val.name);
         });
+        // 导航菜单默认激活
+        // this.defaultActive = temp[0].name === '图书借阅' ? '图书借阅' : '注册审核';
         // 过滤 不需要显示路由
         this.route = temp.filter(val => typeof val.icon !== 'undefined');
     },
