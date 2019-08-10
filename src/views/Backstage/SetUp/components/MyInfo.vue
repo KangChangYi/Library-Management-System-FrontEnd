@@ -2,10 +2,10 @@
     <div class="my-info-layout">
         <el-form :model="form">
             <el-form-item label="邮箱">
-                <el-input v-model="form.email"></el-input>
+                <el-input v-model="form.email" disabled></el-input>
             </el-form-item>
             <el-form-item label="身份">
-                <el-input v-model="form.role"></el-input>
+                <el-input v-model="form.role" disabled></el-input>
             </el-form-item>
             <el-form-item label="昵称">
                 <el-input v-model="form.nickName"></el-input>

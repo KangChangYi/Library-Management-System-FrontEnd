@@ -2,7 +2,7 @@
   <div>
         <div class="tool-box">
             <div style="width:250px">
-                <el-input placeholder="搜索图书" prefix-icon="el-icon-search"
+                <el-input placeholder="搜索用户邮箱" prefix-icon="el-icon-search"
                  @change="searchUser()" v-model="searchEmail">
                 </el-input>
             </div>

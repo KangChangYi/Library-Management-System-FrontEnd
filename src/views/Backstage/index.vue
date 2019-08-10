@@ -39,6 +39,8 @@
 <script>
 // 组件
 import naviMenu from './components/naviMenu/index.vue';
+// api
+import { getBorrowInfo } from '@/api/borrow';
 
 import { removeToken } from '@/utils/auth';
 
@@ -54,6 +56,7 @@ export default {
         };
     },
     created() {
+        this.noticeOfReturn();
         this.pageTitle = this.$route.name;
     },
     methods: {
@@ -69,9 +72,10 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }).then(() => {
-                    // 登出 并清除token和动态路由信息
+                    // 登出 并清除 token 和动态路由信息
                     removeToken();
                     this.$store.commit('changePermission', false);
+
                     this.$router.push({ path: '/Login' });
                 }).catch(() => {
                     this.$message('取消登出!');
@@ -81,6 +85,28 @@ export default {
                     path: '/SetUp',
                 });
             }
+        },
+        // 如果有书即将到期，提示
+        noticeOfReturn(page = 1) {
+            const userId = this.$store.state.userInfo._id;
+            getBorrowInfo({ id: userId, page }).then((res) => {
+                console.log(res.data);
+                const borrowInfo = res.data;
+                const result = borrowInfo.some((val) => {
+                    // 应还日期
+                    const sDate = new Date(val.shouldDate).getTime();
+                    const nowDate = new Date().getTime();
+                    return (sDate - nowDate) < (1000 * 60 * 60 * 24 * 2); // 2天
+                });
+                if (result) {
+                    this.$notify({
+                        title: '提示',
+                        message: '有部分书籍即将到期，请注意及时还书',
+                        type: 'warning',
+                        duration: 0,
+                    });
+                }
+            });
         },
     },
     computed: {},

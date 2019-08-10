@@ -5,7 +5,7 @@ const cpus = require('os').cpus().length;
 module.exports = {
     // 基本路径
     publicPath: process.env.NODE_ENV === 'production'
-        ? '/' // your_production_url
+        ? './' // your_production_url
         : '/',
 
     // 输出文件目录
@@ -64,9 +64,7 @@ module.exports = {
         loaderOptions: {
             //  全局css样式，具体用法参考App.vue
             sass: {
-                data: `
-          @import "@/styles/index.scss";
-        `,
+                data: '@import "@/styles/index.scss";',
             },
         },
         modules: false, // 启用 CSS modules for all css / pre-processor files.

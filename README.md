@@ -1,23 +1,20 @@
-# 图书馆管理系统 - 前台
+# 图书馆管理系统 - 前端📚
 
-## Project setup
+## 启动
 ```
 npm install
 npm run serve
 ```
 
-## Compiles and minifies for production
-```
-npm run build
-```
+本项目为课程设计大作业开发（包括图书管理系统后端）。
++ 项目架构为v：Vue + Vuex + Vue-Router + axios + Element-ui
 
-## Todo list
+使用动态路由，jwt，请求限制进行权限管理。
 
-- [x] vue.config.js 配置
-- [x] scss 全局样式
-- [x] axios 封装
-- [x] router
-- [x] vuex
-- [x] svg-icon 组件封装
-- [x] NProgress 页面加载进度条
-- [x] 全局 mixins
+## 首页预览🎬：
+
+![](./src/assets/home-page.png)
+
+## 后台管理页面预览🎬：
+
+![](./src/assets/manage-page.png)

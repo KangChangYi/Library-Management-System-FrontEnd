@@ -83,6 +83,11 @@ const studentRoutes = [{
             name: '当前借阅',
             component: () => import('@/views/Backstage/CurrentBorrow/index.vue'),
         },
+        {
+            path: '/SetUp',
+            name: '设置',
+            component: () => import('@/views/Backstage/SetUp/index.vue'),
+        },
     ],
 }];
 

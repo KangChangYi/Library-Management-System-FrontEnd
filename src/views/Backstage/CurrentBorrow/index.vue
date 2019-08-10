@@ -22,7 +22,7 @@
                             还书
                         </el-button>
                         <el-button v-if="scope.row.isLend===false" type="danger"
-                        size="small" :disabled="!scope.row.amountFine"
+                        size="small" :disabled="scope.row.isPayment"
                         @click="handlePayment(scope.$index, scope.row)">
                             缴费
                         </el-button>
@@ -72,8 +72,8 @@ export default {
             });
         },
         // 点击缴费
-        handlePayment() {
-
+        handlePayment(index) {
+            this.borrowInfoList[index].isPayment = true;
         },
         // 切换页码
         changePage(pageNumber) {

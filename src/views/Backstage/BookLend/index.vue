@@ -77,6 +77,9 @@ export default {
                 setTimeout(() => {
                     this.isLoading = false;
                 }, 200);
+            }).catch(() => {
+                this.$message.warning('借阅失败');
+                this.isLoading = false;
             });
         },
         // 搜索
